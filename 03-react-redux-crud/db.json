@@ -1,29 +1,29 @@
 {
   "products": [
     {
-      "id": 1,
-      "barang": "Barang1",
-      "price": 10
+      "barang": "Barang 1",
+      "price": "1000",
+      "id": 1
     },
     {
-      "id": 2,
-      "barang": "Barang2",
-      "price": 20
+      "barang": "Barang 2",
+      "price": "2000",
+      "id": 2
     },
     {
-      "id": 3,
-      "barang": "Barang3",
-      "price": 30
+      "barang": "Barang 3",
+      "price": "3000",
+      "id": 3
     },
     {
-      "id": 4,
-      "barang": "Barang4",
-      "price": 40
+      "barang": "Barang 4",
+      "price": "4000",
+      "id": 4
     },
     {
-      "id": 5,
-      "barang": "Barang5",
-      "price": 50
+      "barang": "Barang 5",
+      "price": "5000",
+      "id": 5
     }
   ]
 }

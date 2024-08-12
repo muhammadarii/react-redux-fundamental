@@ -1,27 +1,19 @@
-import { useDispatch, useSelector } from "react-redux";
-import { decrement, increment } from "./features/Counter";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ShowProduct from "./components/ShowProduct.jsx";
+import AddProduct from "./components/AddProduct.jsx";
+import EditProduct from "./components/EditProduct.jsx";
 
 function App() {
-  const count = useSelector((state) => state.counter.value);
-  const dispatch = useDispatch();
   return (
-    <div>
-      <div>
-        <button
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          Increment
-        </button>
-        <span>{count}</span>
-        <button
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          Decrement
-        </button>
+    <BrowserRouter>
+      <div className="container">
+        <Routes>
+          <Route path="/" element={<ShowProduct />} />
+          <Route path="/add" element={<AddProduct />} />
+          <Route path="/edit/:id" element={<EditProduct />} />
+        </Routes>
       </div>
-    </div>
+    </BrowserRouter>
   );
 }
 

@@ -1,17 +1,17 @@
 import {
+  createSlice,
   createAsyncThunk,
   createEntityAdapter,
-  createSlice,
 } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const getProduct = createAsyncThunk("product,getProduct", async () => {
+export const getProduct = createAsyncThunk("product/getProduct", async () => {
   const response = await axios.get("http://localhost:5000/products");
   return response.data;
 });
 
 export const saveProduct = createAsyncThunk(
-  "product/saveProduct",
+  "products/saveProduct",
   async ({ barang, price }) => {
     const response = await axios.post("http://localhost:5000/products", {
       barang,
@@ -22,10 +22,9 @@ export const saveProduct = createAsyncThunk(
 );
 
 export const updateProduct = createAsyncThunk(
-  "product/updateProduct",
+  "products/updateProduct",
   async ({ id, barang, price }) => {
-    const response = await axios.put(`http://localhost:5000/products/${id}`, {
-      id,
+    const response = await axios.patch(`http://localhost:5000/products/${id}`, {
       barang,
       price,
     });
@@ -34,42 +33,42 @@ export const updateProduct = createAsyncThunk(
 );
 
 export const deleteProduct = createAsyncThunk(
-  "product/deleteProduct",
-  async ({ id }) => {
-    const response = await axios.delete(`http://localhost:5000/products/${id}`);
-    return response.data;
+  "products/deleteProduct",
+  async (id) => {
+    await axios.delete(`http://localhost:5000/products/${id}`);
+    return id;
   }
 );
 
-const productEntry = createEntityAdapter({
+const productEntity = createEntityAdapter({
   selectId: (product) => product.id,
 });
 
 const productSlice = createSlice({
   name: "product",
-  initialState: productEntry.getInitialState(),
+  initialState: productEntity.getInitialState(),
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getProduct.fulfilled, (state, action) => {
-        productEntry.setAll(state, action.payload);
+        productEntity.setAll(state, action.payload);
       })
       .addCase(saveProduct.fulfilled, (state, action) => {
-        productEntry.addOne(state, action.payload);
-      })
-      .addCase(updateProduct.fulfilled, (state, action) => {
-        productEntry.upsertOne(state, {
-          id: action.payload.id,
-          changes: action.payload,
-        });
+        productEntity.addOne(state, action.payload);
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
-        productEntry.removeOne(state, action.payload.id);
+        productEntity.removeOne(state, action.payload);
+      })
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        productEntity.updateOne(state, {
+          id: action.payload.id,
+          updates: action.payload,
+        });
       });
   },
 });
 
-export const productSelector = productEntry.getSelectors(
+export const productSelectors = productEntity.getSelectors(
   (state) => state.product
 );
 export default productSlice.reducer;
